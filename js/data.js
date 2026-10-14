@@ -83,7 +83,23 @@ function setData(key, val) { localStorage.setItem(key, JSON.stringify(val)); }
 
 function getUsers(){ return getData("users", defaultUsers); }
 function saveUsers(u){ setData('users', u); }
-function getOrgs() { return getData("orgs", defaultOrgs); }
+function getOrgs() {
+  var orgs = getData("orgs", defaultOrgs);
+  var categories = {1:"Academic", 2:"Technology", 3:"Technology", 4:"Academic", 5:"Technology"};
+  var types = {1:"Academic Organization", 2:"Interest Organization", 3:"Interest Organization", 4:"Academic Organization", 5:"Interest Organization"};
+  var changed = false;
+  for (var i = 0; i < orgs.length; i++) {
+    var o = orgs[i];
+    if (!o.category) { o.category = categories[o.id] || "Community"; changed = true; }
+    if (!o.orgType) { o.orgType = types[o.id] || "Student Organization"; changed = true; }
+    if (!Array.isArray(o.announcements)) { o.announcements = []; changed = true; }
+    if (!Array.isArray(o.events)) { o.events = []; changed = true; }
+    if (!Array.isArray(o.applications)) { o.applications = []; changed = true; }
+    if (!Array.isArray(o.resignations)) { o.resignations = []; changed = true; }
+  }
+  if (changed) saveOrgs(orgs);
+  return orgs;
+}
 function saveOrgs(o){ setData("orgs", o); }
 function getMembers() { return getData('members', defaultMembers); }
 function saveMembers(m){ setData("members", m); }
@@ -258,4 +274,19 @@ function doDrop(code) {
     }
   }
   return false;
+}
+
+// org helpers
+function canManageOrg(email, orgId) {
+  var u = getUserByEmail(email);
+  var role = getRole(email, orgId);
+  return !!u && (u.role === "admin" || role === "president" || role === "officer");
+}
+function isPresidentOf(email, orgId) {
+  var u = getUserByEmail(email);
+  return !!u && (u.role === "admin" || getRole(email, orgId) === "president");
+}
+function upcomingEvents(org) {
+  var today = new Date().toISOString().slice(0, 10);
+  return (org.events || []).filter(function(event) { return event.date >= today; });
 }
