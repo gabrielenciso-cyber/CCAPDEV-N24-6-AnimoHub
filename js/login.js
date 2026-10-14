@@ -12,7 +12,7 @@ function showTab(t){
 
 // student has _ and teacher has .
 function detectRole(email){
-    if(email.indexOf('@dlsu.edu.ph') == -1) return null
+    if (!/^[a-z0-9._-]+@dlsu\.edu\.ph$/.test(email)) return null
     var local = email.split("@")[0];
     if (local.indexOf("_") != -1) return 'student'
     if(local.indexOf(".") != -1) return "teacher";
