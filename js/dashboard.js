@@ -82,6 +82,7 @@ var events = [];
 for (var i = 0; i<orgs.length; i++) {
 	for(var j = 0; j<orgs[i].events.length; j++){
 		var e = orgs[i].events[j]
+        if (e.date < new Date().toISOString().slice(0,10)) continue;
 		events.push({title:e.title, date:e.date, place:e.place, org:orgs[i].name, color:orgs[i].color, orgId:orgs[i].id});
 	}
 }
