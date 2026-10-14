@@ -27,6 +27,8 @@ function newOrg() {
 	document.getElementById("oName").value="";
 	 document.getElementById("oDesc").value = "";
 	document.getElementById("oPres").value="";
+  document.getElementById("oCategory").value="Academic";
+  document.getElementById("oType").value="Academic Organization";
 	openModal("orgModal")
 }
 function editOrg(id) {
@@ -35,6 +37,8 @@ function editOrg(id) {
   document.getElementById('oId').value = id;
   document.getElementById('oName').value = o.name
   document.getElementById("oDesc").value = o.desc;
+  document.getElementById("oCategory").value = o.category;
+  document.getElementById("oType").value = o.orgType;
   document.getElementById('oPres').value=getPresident(id);
    openModal("orgModal");
 }
@@ -43,22 +47,24 @@ function saveOrgForm(){
   var id=document.getElementById('oId').value;
   var name = document.getElementById("oName").value.trim();
   var desc = document.getElementById("oDesc").value.trim();
+  var category = document.getElementById("oCategory").value;
+  var orgType = document.getElementById("oType").value.trim();
   var presEmail=document.getElementById("oPres").value.trim().toLowerCase();
 
-  if(name=="" || desc == "" || presEmail == "") { toast('Please fill in all fields', 'error'); return; }
+  if(name=="" || desc == "" || orgType == "" || presEmail == "") { toast('Please fill in all fields', 'error'); return; }
   var presUser = getUserByEmail(presEmail)
   if(presUser==null || presUser.role != "student"){ toast('President must be a registered student email', "error"); return; }
   var orgs = getOrgs()
   var orgId; 
   if(id == "") {
      orgId=nextId(orgs);  
-    orgs.push({id:orgId, name:name, desc:desc,color:"#0b6b3a", recruiting:true, officerHiring:false, events:[], applications:[], resignations:[]});
+    orgs.push({id:orgId, name:name, desc:desc,category:category,orgType:orgType,announcements:[],color:"#0b6b3a", recruiting:true, officerHiring:false, events:[], applications:[], resignations:[]});
     toast("Organization added", "success");   
   }
   else {
     orgId = parseInt(id);
     for(var i = 0; i < orgs.length; i += 1) {
-      if (orgs[i].id == orgId){ orgs[i].name = name; orgs[i].desc = desc; }
+      if (orgs[i].id == orgId){ orgs[i].name = name; orgs[i].desc = desc; orgs[i].category = category; orgs[i].orgType = orgType; }
     }
     toast('Organization updated', 'success');
   }
@@ -103,7 +109,7 @@ function createAdmin() {
     var em = document.getElementById("aEmail").value.trim().toLowerCase()
     var pw = document.getElementById("aPass").value;   
     if (name==''||em == "" || pw == ""){ toast('Fill in all fields', "error"); return; }
-    if(em.indexOf("@dlsu.edu.ph") == -1){ toast('Use a DLSU email', 'error'); return; }
+    if(!/^[a-z0-9._-]+@dlsu\.edu\.ph$/.test(em)){ toast('Use a DLSU email', 'error'); return; }
     if (pw.length < 6){ toast('Password must be at least 6 characters', "error"); return; }
     if(getUserByEmail(em)!=null) { toast('Email already exists', "error"); return; }
     var users = getUsers();
