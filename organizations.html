@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnimoHub - Organizations</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="navbar"></div>
+
+
+
+<div class="container">
+    <h1>Organizations</h1>
+
+  <div class="carousel" id="carousel">
+    <div id="slides"></div>
+      <button class="prev">&#10094;</button>
+		<button class="next">&#10095;</button>
+    </div>
+
+
+
+  <div class='filters'>
+    <input type="text" id="search" placeholder="Search organizations..." oninput="render()">
+    <select id="recFilter" onchange="render()">
+      <option value="all">All organizations</option>
+      <option value="open">Recruiting</option>
+			<option value="closed">Not recruiting</option>
+    </select>
+  </div>
+
+ <div class="grid" id="orgGrid"></div>
+</div>
+
+
+<div id="toasts"></div>
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/orgs.js"></script> 
+</body>
+</html>
+
+
+
