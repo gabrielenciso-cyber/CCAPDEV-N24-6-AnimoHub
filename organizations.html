@@ -12,7 +12,11 @@
 
 
 <div class="container">
-    <h1>Organizations</h1>
+    <div class="section-heading">
+      <span class="eyebrow">CCS COMMUNITY</span>
+      <h1>Find your organization.</h1>
+      <p class="muted">Explore College of Computer Studies organizations, events and recruitment opportunities.</p>
+    </div>
 
   <div class="carousel" id="carousel">
     <div id="slides"></div>
@@ -24,14 +28,22 @@
 
   <div class='filters'>
     <input type="text" id="search" placeholder="Search organizations..." oninput="render()">
-    <select id="recFilter" onchange="render()">
+    <select id="categoryFilter" aria-label="Filter by category" onchange="render()">
+      <option value="all">All categories</option>
+      <option value="Academic">Academic</option>
+      <option value="Technology">Technology</option>
+      <option value="Community">Community</option>
+      <option value="Government">Government</option>
+    </select>
+    <select id="recFilter" aria-label="Filter by recruitment" onchange="render()">
       <option value="all">All organizations</option>
       <option value="open">Recruiting</option>
 			<option value="closed">Not recruiting</option>
     </select>
   </div>
 
- <div class="grid" id="orgGrid"></div>
+ <div class="row" style="border:none"><h2>Student Organizations</h2><span class="muted" id="resultsCount" aria-live="polite"></span></div>
+  <div class="grid" id="orgGrid"></div>
 </div>
 
 
